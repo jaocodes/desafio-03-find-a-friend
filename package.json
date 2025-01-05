@@ -1,0 +1,31 @@
+{
+  "name": "desafio-03-find-a-friend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.js",
+    "start": "node --env-file=.env build/server.js",
+    "build": "tsup src --out-dir build",
+    "test": "vitest run --dir src/use-cases"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "22.10.5",
+    "prisma": "6.1.0",
+    "tsup": "8.3.5",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2"
+  },
+  "dependencies": {
+    "@prisma/client": "6.1.0",
+    "@types/bcryptjs": "2.4.6",
+    "bcryptjs": "2.4.3",
+    "dotenv": "16.4.7",
+    "fastify": "5.2.0",
+    "zod": "3.24.1"
+  }
+}
