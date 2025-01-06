@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { Decimal } from '@prisma/client/runtime/library'
 
 export class InMemoryOrgsRepository implements OrgsRepository {
-    private orgs: Org[] = []
+    private items: Org[] = []
 
     async create(data: Prisma.OrgCreateInput): Promise<Org> {
         const org = {
@@ -24,13 +24,23 @@ export class InMemoryOrgsRepository implements OrgsRepository {
             longitude: new Decimal(data.longitude.toString()),
         }
 
-        this.orgs.push(org)
+        this.items.push(org)
 
         return org
     }
     async findByEmail(email: string): Promise<Org | null> {
-        const org = this.orgs.find((item) => {
+        const org = this.items.find((item) => {
             return item.email === email
+        })
+        if (!org) {
+            return null
+        }
+
+        return org
+    }
+    async findById(id: string) {
+        const org = this.items.find((item) => {
+            return item.id === id
         })
         if (!org) {
             return null
