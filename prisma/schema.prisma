@@ -36,17 +36,23 @@ model Org {
   @@map("orgs")
 }
 
+enum AnimalType {
+  cat
+  dog
+}
+
 model Pet {
   id String @id @default(uuid())
 
   name              String
   about             String
+  animal_type       AnimalType
   age               String
   size              String
   energy_stat       String
   space_requirement String
   orgId             String
-  org               Org    @relation(fields: [orgId], references: [id])
+  org               Org        @relation(fields: [orgId], references: [id])
 
   @@map("pets")
 }
