@@ -8,7 +8,7 @@ let orgsRepository: InMemoryOrgsRepository
 let petsRepository: InMemoryPetsRepository
 let sut: FetchPetsUseCase
 
-describe('Get pets by city use-case', () => {
+describe('Get pets use-case only by city', () => {
     beforeEach(() => {
         orgsRepository = new InMemoryOrgsRepository()
         petsRepository = new InMemoryPetsRepository(orgsRepository)
@@ -98,5 +98,191 @@ describe('Get pets by city use-case', () => {
         expect(pets).toHaveLength(2)
         expect(petsBelem).toHaveLength(1)
         expect(petsNoWhere).toHaveLength(0)
+    })
+
+    it('should be able to get pets by city and age', async () => {
+        await orgsRepository.create({
+            id: 'org-01',
+            name: 'Happy Pet',
+            coordinator_name: 'Jhon Cruz',
+            whatsapp: '91984087807',
+            email: 'jhon@example.com',
+            password_hash: await hash('12345678', 6),
+            cep: '68743200',
+            state: 'PA',
+            city: 'Castanhal',
+            street: 'Barão do Rio Branco',
+            number: '38-B',
+            latitude: -1.2843669,
+            longitude: -47.9242824,
+        })
+
+        await petsRepository.create({
+            id: 'some-id-01',
+            name: 'Floquinho',
+            about: 'Sou pequeno e branquinho como um floco de neve',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-02',
+            name: 'Bolinha',
+            about: 'Sou pequeno e gordinho',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-03',
+            name: 'Mariano',
+            about: 'Gato de pelo amarelo',
+            age: '2 anos',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'cat',
+            space_requirement: 'Pequeno',
+        })
+
+        const { pets } = await sut.execute({
+            page: 0,
+            city: 'Castanhal',
+            age: '2 anos',
+        })
+
+        expect(pets).toHaveLength(1)
+    })
+
+    it('should be able to get pets by city and animal type', async () => {
+        await orgsRepository.create({
+            id: 'org-01',
+            name: 'Happy Pet',
+            coordinator_name: 'Jhon Cruz',
+            whatsapp: '91984087807',
+            email: 'jhon@example.com',
+            password_hash: await hash('12345678', 6),
+            cep: '68743200',
+            state: 'PA',
+            city: 'Castanhal',
+            street: 'Barão do Rio Branco',
+            number: '38-B',
+            latitude: -1.2843669,
+            longitude: -47.9242824,
+        })
+
+        await petsRepository.create({
+            id: 'some-id-01',
+            name: 'Floquinho',
+            about: 'Sou pequeno e branquinho como um floco de neve',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-02',
+            name: 'Bolinha',
+            about: 'Sou pequeno e gordinho',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-03',
+            name: 'Mariano',
+            about: 'Gato de pelo amarelo',
+            age: '2 anos',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'cat',
+            space_requirement: 'Pequeno',
+        })
+
+        const { pets } = await sut.execute({
+            page: 0,
+            city: 'Castanhal',
+            animalType: 'dog',
+        })
+
+        expect(pets).toHaveLength(2)
+    })
+
+    it('should be able to get pets by city and animal type', async () => {
+        await orgsRepository.create({
+            id: 'org-01',
+            name: 'Happy Pet',
+            coordinator_name: 'Jhon Cruz',
+            whatsapp: '91984087807',
+            email: 'jhon@example.com',
+            password_hash: await hash('12345678', 6),
+            cep: '68743200',
+            state: 'PA',
+            city: 'Castanhal',
+            street: 'Barão do Rio Branco',
+            number: '38-B',
+            latitude: -1.2843669,
+            longitude: -47.9242824,
+        })
+
+        await petsRepository.create({
+            id: 'some-id-01',
+            name: 'Floquinho',
+            about: 'Sou pequeno e branquinho como um floco de neve',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'large',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-02',
+            name: 'Bolinha',
+            about: 'Sou pequeno e gordinho',
+            age: '1 ano',
+            energy_stat: 'Muita energia',
+            size: 'medium',
+            orgId: 'org-01',
+            animal_type: 'dog',
+            space_requirement: 'Pequeno',
+        })
+
+        await petsRepository.create({
+            id: 'some-id-03',
+            name: 'Mariano',
+            about: 'Gato de pelo amarelo',
+            age: '2 anos',
+            energy_stat: 'Muita energia',
+            size: 'small',
+            orgId: 'org-01',
+            animal_type: 'cat',
+            space_requirement: 'Pequeno',
+        })
+
+        const { pets } = await sut.execute({
+            page: 0,
+            city: 'Castanhal',
+            size: 'small',
+        })
+
+        expect(pets).toHaveLength(1)
     })
 })
