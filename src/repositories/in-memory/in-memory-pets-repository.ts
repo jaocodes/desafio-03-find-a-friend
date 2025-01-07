@@ -46,9 +46,22 @@ export class InMemoryPetsRepository implements PetsRepository {
     }: FiltersParams): Promise<Pet[]> {
         const orgsInCity = await this.orgsRepository.fetchByCity(city)
 
-        const pets = this.items.filter((pet) =>
-            orgsInCity.some((org) => org.id === pet.orgId),
-        )
+        const pets = this.items
+            .filter((pet) => orgsInCity.some((org) => org.id === pet.orgId))
+            .filter((pet) => (age ? pet.age === age : true))
+            .filter((pet) => (size ? pet.size === size : true))
+
+            .filter((pet) =>
+                animalType ? pet.animal_type === animalType : true,
+            )
+            .filter((pet) =>
+                energyStat ? pet.energy_stat === energyStat : true,
+            )
+            .filter((pet) =>
+                spaceRequirement
+                    ? pet.space_requirement === spaceRequirement
+                    : true,
+            )
 
         return pets
     }
