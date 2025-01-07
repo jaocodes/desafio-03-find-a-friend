@@ -1,10 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { GetPetDetailsUseCase } from './get-pet-details'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
-import type { PetsRepository } from '@/repositories/pets-repository'
 import { ResourseNotFoundError } from './errors/resource-not-found-error'
 
-let petsRepository: PetsRepository
+let petsRepository: InMemoryPetsRepository
 let sut: GetPetDetailsUseCase
 
 describe('Get pet details use-case', () => {

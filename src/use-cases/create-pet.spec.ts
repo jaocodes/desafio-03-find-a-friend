@@ -1,19 +1,18 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { CreatePetUseCase } from './create-pet'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
-import type { OrgsRepository } from '@/repositories/orgs-repository'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { hash } from 'bcryptjs'
 import { ResourseNotFoundError } from './errors/resource-not-found-error'
 
 let petsRepository: InMemoryPetsRepository
-let orgsRepository: OrgsRepository
+let orgsRepository: InMemoryOrgsRepository
 let sut: CreatePetUseCase
 
 describe('Create a pet use-case', () => {
     beforeEach(async () => {
-        petsRepository = new InMemoryPetsRepository()
         orgsRepository = new InMemoryOrgsRepository()
+        petsRepository = new InMemoryPetsRepository(orgsRepository)
         sut = new CreatePetUseCase(petsRepository, orgsRepository)
 
         await orgsRepository.create({
