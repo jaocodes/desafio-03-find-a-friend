@@ -44,7 +44,7 @@ export class InMemoryPetsRepository implements PetsRepository {
         size,
         spaceRequirement,
     }: FiltersParams): Promise<Pet[]> {
-        const orgsInCity = await this.orgsRepository.fetchByCity(city)
+        const orgsInCity = await this.orgsRepository.findByCity(city)
 
         const pets = this.items
             .filter((pet) => orgsInCity.some((org) => org.id === pet.orgId))

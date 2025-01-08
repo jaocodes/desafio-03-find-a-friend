@@ -49,7 +49,7 @@ export class InMemoryOrgsRepository implements OrgsRepository {
         return org
     }
 
-    async fetchByCity(city: string) {
+    async findByCity(city: string) {
         const orgs = this.items.filter((item) => item.city === city)
 
         return orgs
