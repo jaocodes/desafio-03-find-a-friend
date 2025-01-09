@@ -12,7 +12,7 @@ describe('authenticate org (e2e)', () => {
     })
 
     it('should be able to authenticate with correct credentials', async () => {
-        await request(app.server).post('/register').send({
+        await request(app.server).post('/orgs/register').send({
             name: 'Happy Pet',
             coordinator_name: 'Jhon Cruz',
             whatsapp: '91984087807',
@@ -27,10 +27,12 @@ describe('authenticate org (e2e)', () => {
             longitude: -47.9242824,
         })
 
-        const response = await request(app.server).post('/authenticate').send({
-            email: 'jhon@example.com',
-            password: '12345678',
-        })
+        const response = await request(app.server)
+            .post('/orgs/authenticate')
+            .send({
+                email: 'jhon@example.com',
+                password: '12345678',
+            })
 
         expect(response.statusCode).toEqual(200)
         expect(response.body.token).toEqual(expect.any(String))

@@ -12,7 +12,7 @@ describe('register org (e2e)', () => {
     })
 
     it('should be able to register an org', async () => {
-        const response = await request(app.server).post('/register').send({
+        const response = await request(app.server).post('/orgs/register').send({
             name: 'Happy Pet',
             coordinator_name: 'Jhon Cruz',
             whatsapp: '91984087807',
