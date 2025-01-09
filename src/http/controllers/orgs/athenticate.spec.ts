@@ -2,7 +2,7 @@ import { app } from '@/app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 
-describe('register org (e2e)', () => {
+describe('authenticate org (e2e)', () => {
     beforeAll(async () => {
         await app.ready()
     })
@@ -11,8 +11,8 @@ describe('register org (e2e)', () => {
         await app.close()
     })
 
-    it('should be able to register an org', async () => {
-        const response = await request(app.server).post('/register').send({
+    it('should be able to authenticate with correct credentials', async () => {
+        await request(app.server).post('/register').send({
             name: 'Happy Pet',
             coordinator_name: 'Jhon Cruz',
             whatsapp: '91984087807',
@@ -27,6 +27,12 @@ describe('register org (e2e)', () => {
             longitude: -47.9242824,
         })
 
-        expect(response.statusCode).toEqual(201)
+        const response = await request(app.server).post('/authenticate').send({
+            email: 'jhon@example.com',
+            password: '12345678',
+        })
+
+        expect(response.statusCode).toEqual(200)
+        expect(response.body.token).toEqual(expect.any(String))
     })
 })
