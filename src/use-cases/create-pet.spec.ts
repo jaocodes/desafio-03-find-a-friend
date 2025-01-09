@@ -3,7 +3,7 @@ import { CreatePetUseCase } from './create-pet'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { hash } from 'bcryptjs'
-import { ResourseNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let petsRepository: InMemoryPetsRepository
 let orgsRepository: InMemoryOrgsRepository
@@ -59,6 +59,6 @@ describe('Create a pet use-case', () => {
                 animalType: 'dog',
                 spaceRequirement: 'Pequeno',
             }),
-        ).rejects.toBeInstanceOf(ResourseNotFoundError)
+        ).rejects.toBeInstanceOf(ResourceNotFoundError)
     })
 })

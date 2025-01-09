@@ -1,7 +1,7 @@
 import type { OrgsRepository } from '@/repositories/orgs-repository'
 import type { PetsRepository } from '@/repositories/pets-repository'
 import type { Pet } from '@prisma/client'
-import { ResourseNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface CreatePetUseCaseRequest {
     name: string
@@ -36,7 +36,7 @@ export class CreatePetUseCase {
     }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
         const org = await this.orgsRepository.findById(orgId)
 
-        if (!org) throw new ResourseNotFoundError()
+        if (!org) throw new ResourceNotFoundError()
 
         const pet = await this.petsRepository.create({
             about,
