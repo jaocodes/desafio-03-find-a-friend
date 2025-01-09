@@ -9,17 +9,17 @@ export async function getPetDetails(
     reply: FastifyReply,
 ) {
     const petDetailsParamsSchema = z.object({
-        petId: z.string().uuid(),
+        id: z.string(),
     })
 
-    const { petId } = petDetailsParamsSchema.parse(request.params)
+    const { id } = petDetailsParamsSchema.parse(request.params)
 
     const getPetDetailsUseCase = makeGetPetDetailsUseCase()
 
     try {
-        const { pet } = await getPetDetailsUseCase.execute({ petId })
+        const { pet } = await getPetDetailsUseCase.execute({ petId: id })
 
-        return reply.status(200).send({ pet })
+        return reply.status(200).send(pet)
     } catch (error) {
         if (error instanceof ResourceNotFoundError)
             return reply.status(404).send({ message: error.message })
