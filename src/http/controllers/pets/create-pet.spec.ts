@@ -40,7 +40,6 @@ describe('Create a pet (e2e)', () => {
                 age: '1 ano',
                 energyStat: 'Muita energia',
                 size: 'small',
-                orgId: 'org-id',
                 animalType: 'dog',
                 spaceRequirement: 'Pequeno',
             })

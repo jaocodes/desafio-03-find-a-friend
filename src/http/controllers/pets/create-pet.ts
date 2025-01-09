@@ -20,5 +20,5 @@ export async function createPet(request: FastifyRequest, reply: FastifyReply) {
 
     const { pet } = await createPetUseCase.execute({ orgId, ...data })
 
-    return reply.status(201).send()
+    return reply.status(201).send(pet)
 }
