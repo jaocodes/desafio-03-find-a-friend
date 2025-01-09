@@ -1,4 +1,3 @@
-import { makeCreatePetUseCase } from '@/factorys/make-create-pet-use-case'
 import { makeGetPetDetailsUseCase } from '@/factorys/make-get-pet-details-use-case'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 import type { FastifyReply, FastifyRequest } from 'fastify'
