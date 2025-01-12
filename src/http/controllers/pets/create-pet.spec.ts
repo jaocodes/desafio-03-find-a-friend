@@ -1,6 +1,8 @@
 import { app } from '@/app'
 import { afterAll, beforeAll, expect, describe, it } from 'vitest'
 import request from 'supertest'
+import { fakeOrg } from 'tests/faker-data/faker-org'
+import { fakePet } from 'tests/faker-data/faker-pet'
 
 describe('Create a pet (e2e)', () => {
     beforeAll(async () => {
@@ -12,37 +14,18 @@ describe('Create a pet (e2e)', () => {
     })
 
     it('should be able to create a pet logged as org', async () => {
-        await request(app.server).post('/orgs/register').send({
-            name: 'Happy Pet',
-            coordinator_name: 'Jhon Cruz',
-            whatsapp: '91984087807',
-            email: 'jhon@example.com',
-            password: '12345678',
-            cep: '68743200',
-            state: 'PA',
-            city: 'Castanhal',
-            street: 'Barão do Rio Branco',
-            number: '38-B',
-            latitude: -1.2843669,
-            longitude: -47.9242824,
-        })
+        const org = fakeOrg()
+
+        await request(app.server).post('/orgs/register').send(org)
 
         const responseWithTokenJWT = await request(app.server)
             .post('/orgs/authenticate')
-            .send({ email: 'jhon@example.com', password: '12345678' })
+            .send({ email: org.email, password: org.password })
 
         const response = await request(app.server)
             .post('/pets/create')
             .set('Authorization', `Bearer ${responseWithTokenJWT.body.token}`)
-            .send({
-                name: 'Floquinho',
-                about: 'Sou pequeno e branquinho como um floco de neve',
-                age: '1 ano',
-                energyStat: 'Muita energia',
-                size: 'small',
-                animalType: 'dog',
-                spaceRequirement: 'Pequeno',
-            })
+            .send(fakePet({ orgId: org.id }))
 
         expect(response.status).toEqual(201)
     })

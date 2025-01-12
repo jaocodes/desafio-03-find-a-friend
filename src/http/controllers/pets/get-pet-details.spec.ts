@@ -1,6 +1,8 @@
 import { app } from '@/app'
 import { afterAll, beforeAll, expect, describe, it } from 'vitest'
 import request from 'supertest'
+import { fakeOrg } from 'tests/faker-data/faker-org'
+import { fakePet } from 'tests/faker-data/faker-pet'
 
 describe('Get pet details (e2e)', () => {
     beforeAll(async () => {
@@ -12,41 +14,24 @@ describe('Get pet details (e2e)', () => {
     })
 
     it('should be able to get pet details', async () => {
-        await request(app.server).post('/orgs/register').send({
-            name: 'Happy Pet',
-            coordinator_name: 'Jhon Cruz',
-            whatsapp: '91984087807',
-            email: 'jhon@example.com',
-            password: '12345678',
-            cep: '68743200',
-            state: 'PA',
-            city: 'Castanhal',
-            street: 'Barão do Rio Branco',
-            number: '38-B',
-            latitude: -1.2843669,
-            longitude: -47.9242824,
-        })
+        const org = fakeOrg()
+
+        await request(app.server).post('/orgs/register').send(org)
 
         const responseWithTokenJWT = await request(app.server)
             .post('/orgs/authenticate')
-            .send({ email: 'jhon@example.com', password: '12345678' })
+            .send({ email: org.email, password: org.password })
 
         const responseWithCreatedPet = await request(app.server)
             .post('/pets/create')
             .set('Authorization', `Bearer ${responseWithTokenJWT.body.token}`)
-            .send({
-                name: 'Floquinho',
-                about: 'Sou pequeno e branquinho como um floco de neve',
-                age: '1 ano',
-                energyStat: 'Muita energia',
-                size: 'small',
-                animalType: 'dog',
-                spaceRequirement: 'Pequeno',
-            })
+            .send(fakePet())
 
         const response = await request(app.server).get(
             `/pets/${responseWithCreatedPet.body.id}`,
         )
+
+        console.log(response.body)
         expect(response.body.orgId).toEqual(expect.any(String))
         expect(response.status).toEqual(200)
     })

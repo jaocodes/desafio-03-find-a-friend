@@ -1,6 +1,7 @@
 import { app } from '@/app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import { fakeOrg } from 'tests/faker-data/faker-org'
 
 describe('authenticate org (e2e)', () => {
     beforeAll(async () => {
@@ -12,26 +13,15 @@ describe('authenticate org (e2e)', () => {
     })
 
     it('should be able to authenticate with correct credentials', async () => {
-        await request(app.server).post('/orgs/register').send({
-            name: 'Happy Pet',
-            coordinator_name: 'Jhon Cruz',
-            whatsapp: '91984087807',
-            email: 'jhon@example.com',
-            password: '12345678',
-            cep: '68743200',
-            state: 'PA',
-            city: 'Castanhal',
-            street: 'Barão do Rio Branco',
-            number: '38-B',
-            latitude: -1.2843669,
-            longitude: -47.9242824,
-        })
+        const org = fakeOrg()
+
+        await request(app.server).post('/orgs/register').send(org)
 
         const response = await request(app.server)
             .post('/orgs/authenticate')
             .send({
-                email: 'jhon@example.com',
-                password: '12345678',
+                email: org.email,
+                password: org.password,
             })
 
         expect(response.statusCode).toEqual(200)
