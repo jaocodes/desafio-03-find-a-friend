@@ -31,7 +31,6 @@ describe('Get pet details (e2e)', () => {
             `/pets/${responseWithCreatedPet.body.id}`,
         )
 
-        console.log(response.body)
         expect(response.body.orgId).toEqual(expect.any(String))
         expect(response.status).toEqual(200)
     })

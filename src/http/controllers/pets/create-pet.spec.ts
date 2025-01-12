@@ -25,7 +25,7 @@ describe('Create a pet (e2e)', () => {
         const response = await request(app.server)
             .post('/pets/create')
             .set('Authorization', `Bearer ${responseWithTokenJWT.body.token}`)
-            .send(fakePet({ orgId: org.id }))
+            .send(fakePet())
 
         expect(response.status).toEqual(201)
     })
